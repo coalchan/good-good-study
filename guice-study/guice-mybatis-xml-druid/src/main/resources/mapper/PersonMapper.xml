@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luckypeng.study.guice.dao.PersonMapper">
+    <resultMap id="BaseResultMap" type="com.luckypeng.study.guice.model.Person">
+        <result column="id" property="id" />
+        <result column="age" property="age" />
+        <result column="name" property="name" />
+    </resultMap>
+
+    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select id,name,age from person where id = #{id}
+    </select>
+</mapper>
