@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+// 关于message会生成多个文件，方便定位问题和前期学习; 如果对grpc理解熟练，也可以不加，则只生成一个文件，比较简洁.
+option java_multiple_files = true;
+option java_package = "com.luckypeng.study.hello";
+option java_outer_classname = "HelloWorldProto";
+
+package hello;
+// The greeting service definition.
+service Greeter {
+    // Sends a greeting
+    rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+    string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+    string message = 1;
+}
