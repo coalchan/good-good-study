@@ -1,0 +1,19 @@
+package test
+
+import com.luckypeng.study.drools.model.*
+
+rule "compare ops"
+
+when
+   accumulate (
+        Person($ageNum: age),
+        $min: min($ageNum),
+        $max: max($ageNum),
+        $avg: average($ageNum)
+    )
+
+then
+    System.out.println($min);
+    System.out.println($max);
+    System.out.println($avg);
+end

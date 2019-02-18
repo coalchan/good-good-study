@@ -1,0 +1,9 @@
+package drools
+import com.luckypeng.study.drools.hello.Applicant
+
+rule "Is of valid age"
+when
+    $a : Applicant( age < 18 )
+then
+    $a.setValid( false );
+end

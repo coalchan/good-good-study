@@ -1,0 +1,13 @@
+package test
+
+import com.luckypeng.study.drools.model.*
+
+rule "compare ops"
+
+when
+    Person(likeFood: like) and Food(name == likeFood)
+    $data: DataBean()
+then
+    System.out.println("Oh, yeah!");
+    $data.setTag("nice");
+end

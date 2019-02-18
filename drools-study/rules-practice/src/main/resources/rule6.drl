@@ -1,0 +1,17 @@
+package test
+
+import com.luckypeng.study.drools.model.*
+import java.util.ArrayList
+
+rule "compare ops"
+
+when
+    $data: DataBean()
+    $persons: ArrayList(size < 10, $v: size)
+              from collect( Person(age == 18) )
+then
+    $data.setCnt($v);
+    for(int i = 0; i < $persons.size(); i++) {
+      System.out.println($persons.get(i));
+    }
+end

@@ -1,0 +1,11 @@
+package test
+
+import com.luckypeng.study.drools.model.DataBean
+
+rule "compare ops"
+
+when
+    $data : DataBean( value < 10 )
+then
+    $data.setResult(true);
+end
