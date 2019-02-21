@@ -11,5 +11,11 @@
 
     <artifactId>flink-training-exercises</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-table_${scala.binary.version}</artifactId>
+            <version>${flink.version}</version>
+        </dependency>
+    </dependencies>
 </project>
