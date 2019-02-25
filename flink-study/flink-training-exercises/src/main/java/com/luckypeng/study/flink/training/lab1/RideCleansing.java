@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.luckypeng.study.flink.lab1;
+package com.luckypeng.study.flink.training.lab1;
 
 import com.luckypeng.study.flink.model.TaxiRide;
 import com.luckypeng.study.flink.source.TaxiRideSource;
@@ -64,7 +64,7 @@ public class RideCleansing extends ExerciseBase {
 		env.execute("Taxi Ride Cleansing");
 	}
 
-	private static class NYCFilter implements FilterFunction<TaxiRide> {
+	public static class NYCFilter implements FilterFunction<TaxiRide> {
 
 		@Override
 		public boolean filter(TaxiRide taxiRide) throws Exception {
