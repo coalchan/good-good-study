@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>flink-training-exercises</module>
+        <module>flink-basic</module>
     </modules>
 
     <properties>
