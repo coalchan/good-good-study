@@ -19,7 +19,7 @@ import org.junit.Test;
  * @author coalchan
  * @date 2019/3/4
  */
-public class WindowFunctionTest {
+public class FunctionTest {
     /**
      * ReduceFunction
      * @throws Exception
