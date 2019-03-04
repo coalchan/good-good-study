@@ -1,4 +1,4 @@
-package com.luckypeng.study.basic;
+package com.luckypeng.study.flink.window;
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -6,6 +6,7 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 import org.junit.Test;
 
 /**
+ * 分配器
  * 计算最大值（字符串比较）
  * 时间特征: 处理时间 {@link org.apache.flink.streaming.api.TimeCharacteristic.ProcessingTime}
  *
@@ -15,7 +16,7 @@ import org.junit.Test;
  * @author chenzhipeng
  * @date 2019/2/27 10:49
  */
-public class ProcessingTimeWindowTest {
+public class AssignerTest {
     /**
      * 窗口类型: 滚动时间窗口
      * @throws Exception

@@ -1,4 +1,4 @@
-package com.luckypeng.study.basic;
+package com.luckypeng.study.flink.window;
 
 import org.apache.flink.api.common.functions.AggregateFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
