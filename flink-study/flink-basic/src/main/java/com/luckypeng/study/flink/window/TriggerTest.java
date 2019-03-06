@@ -26,6 +26,23 @@ public class TriggerTest {
                 .print();
         env.execute();
     }
+
+    /**
+     * 每隔5秒钟统计一次当前所在一分钟(0-59s)的数据量
+     * @throws Exception
+     */
+    @Test
+    public void test1() throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        DataStream<String> dataStream = env.socketTextStream("localhost", 12348);
+        dataStream
+                .map(str -> 1)
+                .timeWindowAll(Time.minutes(1))
+                .trigger(new RefreshTrigger(Time.seconds(5)))
+                .sum(0)
+                .print();
+        env.execute();
+    }
 }
 
 /**
@@ -59,5 +76,39 @@ class MyTrigger extends Trigger<Double, TimeWindow> {
     @Override
     public String toString() {
         return "MyTrigger()";
+    }
+}
+
+/**
+ * 每隔 interval 时间触发一次
+ */
+class RefreshTrigger extends Trigger<Integer, TimeWindow> {
+    private long interval;
+
+    public RefreshTrigger(Time interval) {
+        this.interval = interval.toMilliseconds();
+    }
+
+    @Override
+    public TriggerResult onElement(Integer element, long timestamp, TimeWindow window, TriggerContext ctx) throws Exception {
+        long now = ctx.getCurrentProcessingTime();
+        long next = now - now % this.interval + this.interval;
+        ctx.registerProcessingTimeTimer(next);
+        return TriggerResult.CONTINUE;
+    }
+
+    @Override
+    public TriggerResult onProcessingTime(long time, TimeWindow window, TriggerContext ctx) throws Exception {
+        return TriggerResult.FIRE;
+    }
+
+    @Override
+    public TriggerResult onEventTime(long time, TimeWindow window, TriggerContext ctx) throws Exception {
+        return TriggerResult.CONTINUE;
+    }
+
+    @Override
+    public void clear(TimeWindow window, TriggerContext ctx) throws Exception {
+
     }
 }
