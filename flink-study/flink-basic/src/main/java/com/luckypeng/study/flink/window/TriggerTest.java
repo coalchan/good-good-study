@@ -10,7 +10,7 @@ import org.junit.Test;
 
 /**
  * 触发器
- * @author chenzhipeng
+ * @author coalchan
  * @date 2019/3/4 14:42
  */
 public class TriggerTest {

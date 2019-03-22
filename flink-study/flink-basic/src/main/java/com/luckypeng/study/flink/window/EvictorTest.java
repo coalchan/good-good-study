@@ -13,7 +13,7 @@ import java.util.Iterator;
 
 /**
  * 驱逐器
- * @author chenzhipeng
+ * @author coalchan
  * @date 2019/3/4 16:58
  */
 public class EvictorTest {

@@ -13,7 +13,7 @@ import org.junit.Test;
  * 要求安装NetCat
  * linux 和 Mac 上是 nc 命令: nc -kl 12348
  * windows 可以从 http://nmap.org/dist/ncat-portable-5.59BETA1.zip 下载解压使用 ncat.exe 命令: ncat -kl 12348
- * @author chenzhipeng
+ * @author coalchan
  * @date 2019/2/27 10:49
  */
 public class AssignerTest {
