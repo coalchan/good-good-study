@@ -76,6 +76,11 @@ public class RidesAndFaresSolution extends ExerciseBase {
 		env.execute("Join Rides with Fares (java RichCoFlatMap)");
 	}
 
+	/**
+	 * flatMap1 会在 rides 流 的所有元素上被调用
+	 * flatMap2 会在 fares 流 的所有元素上被调用
+	 * 如果遇到 rides 流 与 fares 流 join 上（即 rideId 相同时），那么 flatMap1 和 flatMap2 调用的先后次序是不确定的
+	 */
 	public static class EnrichmentFunction extends RichCoFlatMapFunction<TaxiRide, TaxiFare, Tuple2<TaxiRide, TaxiFare>> {
 		// keyed, managed state
 		private ValueState<TaxiRide> rideState;
