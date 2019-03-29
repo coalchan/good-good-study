@@ -205,6 +205,7 @@ public class TaxiRideSource implements SourceFunction<TaxiRide> {
 				// schedule next watermark
 				long watermarkTime = delayedEventTime + watermarkDelayMSecs;
 				Watermark nextWatermark = new Watermark(watermarkTime - maxDelayMsecs - 1);
+				// 即在 delayedEventTime 之后 watermarkDelayMSecs 的时间，才发射 delayedEventTime - 1 的水印，保证了延迟的数据不因水印而误杀
 				emitSchedule.add(new Tuple2<Long, Object>(watermarkTime, nextWatermark));
 			}
 		}
