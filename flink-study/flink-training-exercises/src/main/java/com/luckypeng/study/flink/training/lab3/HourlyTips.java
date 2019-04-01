@@ -72,6 +72,9 @@ public class HourlyTips extends ExerciseBase {
 //		You should explore how this alternative behaves. In what ways is the same as,
 //		and different from, the solution above (using a timeWindowAll)?
 
+		// 如果像下面这样写的话，则会如此处理：
+		// 上游只要发送一个数据，这里便会按时间戳分组，接着求max
+		// 即这里操作的频率为：一小时（hourlyTips 的窗口）触发 n 次（hourlyTips 的窗口中包含的元素个数，即一小时内的去重司机数）
  		/*DataStream<Tuple3<Long, Long, Float>> hourlyMax = hourlyTips
  			.keyBy(0)
  			.maxBy(2);*/
