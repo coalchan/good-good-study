@@ -11,6 +11,7 @@
     <modules>
         <module>flink-training-exercises</module>
         <module>flink-basic</module>
+        <module>flink-connectors</module>
     </modules>
 
     <properties>
