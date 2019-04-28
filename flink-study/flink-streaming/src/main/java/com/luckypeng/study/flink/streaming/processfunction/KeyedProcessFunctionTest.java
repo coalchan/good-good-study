@@ -1,4 +1,4 @@
-package com.luckypeng.study.flink.training.processfunction;
+package com.luckypeng.study.flink.streaming.processfunction;
 
 import lombok.Data;
 import org.apache.flink.api.common.functions.MapFunction;

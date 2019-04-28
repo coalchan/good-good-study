@@ -1,4 +1,4 @@
-package com.luckypeng.study.flink.training.window;
+package com.luckypeng.study.flink.streaming.window;
 
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;

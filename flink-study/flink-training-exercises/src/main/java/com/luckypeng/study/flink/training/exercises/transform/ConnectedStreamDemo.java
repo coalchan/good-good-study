@@ -1,4 +1,4 @@
-package com.luckypeng.study.flink.training.training.transform;
+package com.luckypeng.study.flink.training.exercises.transform;
 
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;

@@ -1,4 +1,4 @@
-package com.luckypeng.study.flink.training.watermark;
+package com.luckypeng.study.flink.streaming.watermark;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.common.functions.MapFunction;

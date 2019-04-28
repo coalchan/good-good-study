@@ -1,4 +1,4 @@
-package com.luckypeng.study.flink.training.training.helloworld;
+package com.luckypeng.study.flink.training.exercises.helloworld;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

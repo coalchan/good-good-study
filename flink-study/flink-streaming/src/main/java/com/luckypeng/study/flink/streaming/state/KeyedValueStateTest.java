@@ -1,4 +1,4 @@
-package com.luckypeng.study.flink.training.state;
+package com.luckypeng.study.flink.streaming.state;
 
 import org.apache.flink.api.common.functions.RichFlatMapFunction;
 import org.apache.flink.api.common.state.ValueState;

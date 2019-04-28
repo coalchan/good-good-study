@@ -1,9 +1,9 @@
-package com.luckypeng.study.flink.training.training.transform;
+package com.luckypeng.study.flink.training.exercises.transform;
 
 import com.luckypeng.study.flink.training.model.RichTaxiRide;
 import com.luckypeng.study.flink.training.model.TaxiRide;
 import com.luckypeng.study.flink.training.source.TaxiRideSource;
-import com.luckypeng.study.flink.training.training.lab1.RideCleansing;
+import com.luckypeng.study.flink.training.exercises.lab1.RideCleansing;
 import com.luckypeng.study.flink.training.util.ExerciseBase;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;

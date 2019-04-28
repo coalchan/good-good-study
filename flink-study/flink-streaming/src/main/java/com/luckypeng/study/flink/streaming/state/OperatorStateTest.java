@@ -1,4 +1,4 @@
-package com.luckypeng.study.flink.training.state;
+package com.luckypeng.study.flink.streaming.state;
 
 import org.apache.flink.api.common.state.ListState;
 import org.apache.flink.api.common.state.ListStateDescriptor;

@@ -1,4 +1,4 @@
-package com.luckypeng.study.flink.training.window;
+package com.luckypeng.study.flink.streaming.window;
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;

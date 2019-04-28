@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.luckypeng.study.flink.training.training.lab1;
+package com.luckypeng.study.flink.training.exercises.lab1;
 
 import com.luckypeng.study.flink.training.model.TaxiRide;
 import com.luckypeng.study.flink.training.source.TaxiRideSource;
