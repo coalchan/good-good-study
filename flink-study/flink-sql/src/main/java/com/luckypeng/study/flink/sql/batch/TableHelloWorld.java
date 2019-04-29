@@ -1,4 +1,4 @@
-package com.luckypeng.study.flink.sql;
+package com.luckypeng.study.flink.sql.batch;
 
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.operators.DataSource;
