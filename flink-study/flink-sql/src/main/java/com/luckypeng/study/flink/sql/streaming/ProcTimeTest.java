@@ -19,7 +19,11 @@ import org.junit.Test;
 import javax.annotation.Nullable;
 
 /**
- * Processing time
+ * Processing time Table Test
+ *
+ * 要求安装 NetCat
+ * linux 和 Mac 上是 nc 命令: nc -kl 12348
+ * windows 可以从 http://nmap.org/dist/ncat-portable-5.59BETA1.zip 下载解压使用 ncat.exe 命令: ncat -kl 12348
  * @author coalchan
  * @see <a href="https://ci.apache.org/projects/flink/flink-docs-release-1.8/dev/table/streaming/time_attributes.html"></a>
  */
