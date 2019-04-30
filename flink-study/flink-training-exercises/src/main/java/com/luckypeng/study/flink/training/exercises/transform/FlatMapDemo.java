@@ -17,7 +17,7 @@ import static com.luckypeng.study.flink.training.util.ExerciseBase.rideSourceOrT
 
 /**
  * FlatMap 转换
- * @author chenzhipeng
+ * @author coalchan
  * @date 2019/2/25 11:08
  */
 public class FlatMapDemo {

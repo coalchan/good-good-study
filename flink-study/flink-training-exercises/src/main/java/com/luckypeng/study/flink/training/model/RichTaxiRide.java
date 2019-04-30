@@ -3,7 +3,7 @@ package com.luckypeng.study.flink.training.model;
 import com.luckypeng.study.flink.training.util.GeoUtils;
 
 /**
- * @author chenzhipeng
+ * @author coalchan
  * @date 2019/2/25 10:31
  */
 public class RichTaxiRide extends TaxiRide {

@@ -9,7 +9,7 @@ import org.apache.flink.streaming.api.functions.co.RichCoFlatMapFunction;
 import org.apache.flink.util.Collector;
 
 /**
- * @author chenzhipeng
+ * @author coalchan
  * @date 2019/2/25 16:34
  */
 public class ConnectedStreamDemo {

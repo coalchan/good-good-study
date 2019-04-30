@@ -7,7 +7,7 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 /**
- * @author chenzhipeng
+ * @author coalchan
  * @date 2019/2/21 10:20
  */
 public class Example {

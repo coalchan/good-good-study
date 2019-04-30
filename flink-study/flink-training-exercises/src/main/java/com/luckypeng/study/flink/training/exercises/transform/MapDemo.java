@@ -14,7 +14,7 @@ import static com.luckypeng.study.flink.training.util.ExerciseBase.rideSourceOrT
 
 /**
  * map 转换
- * @author chenzhipeng
+ * @author coalchan
  * @date 2019/2/25 10:52
  */
 public class MapDemo {

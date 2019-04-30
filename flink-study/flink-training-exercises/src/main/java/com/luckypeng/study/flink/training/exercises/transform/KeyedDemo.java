@@ -20,7 +20,7 @@ import static com.luckypeng.study.flink.training.util.ExerciseBase.rideSourceOrT
 
 /**
  * Keyed Stream
- * @author chenzhipeng
+ * @author coalchan
  * @date 2019/2/25 13:59
  */
 public class KeyedDemo {
