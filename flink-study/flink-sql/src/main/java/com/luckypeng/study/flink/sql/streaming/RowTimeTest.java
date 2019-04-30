@@ -111,6 +111,26 @@ public class RowTimeTest {
         tableEnv.toAppendStream(result, Row.class).print();
         env.execute();
     }
+
+    /**
+     * 使用 TableSource，利用 SQL 进行查询
+     * @throws Exception
+     */
+    @Test
+    public void testTableSourceWithSql() throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
+        env.setParallelism(1);
+
+        StreamTableEnvironment tableEnv = StreamTableEnvironment.create(env);
+
+        tableEnv.registerTableSource("userAction", new UserSource());
+
+        Table result = tableEnv.sqlQuery("select userId,max(score) from userAction group by TUMBLE(actionTime, INTERVAL '10' SECOND), userId");
+
+        tableEnv.toAppendStream(result, Row.class).print();
+        env.execute();
+    }
 }
 
 class UserSource implements StreamTableSource<Row>, DefinedRowtimeAttributes {
