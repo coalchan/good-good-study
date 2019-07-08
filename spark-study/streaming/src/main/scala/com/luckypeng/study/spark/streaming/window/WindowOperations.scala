@@ -41,4 +41,22 @@ class WindowOperations {
     ssc.start()
     ssc.awaitTermination()
   }
+
+  /**
+    * countByWindow
+    */
+  @Test
+  def testCountByWindow: Unit = {
+    val conf = new SparkConf().setMaster("local[2]").setAppName("NetworkWordCount")
+    val ssc = new StreamingContext(conf, Seconds(5))
+
+    // countByWindow 操作需要 checkpoint
+    ssc.checkpoint("checkpoint-dir")
+
+    val lines = ssc.socketTextStream("localhost", 9999)
+    lines.countByWindow(Seconds(30), Seconds(10)).print()
+
+    ssc.start()
+    ssc.awaitTermination()
+  }
 }
