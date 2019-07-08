@@ -28,3 +28,6 @@
 .mvn
 
 data/
+
+# checkpoint dir
+checkpoint-dir/
