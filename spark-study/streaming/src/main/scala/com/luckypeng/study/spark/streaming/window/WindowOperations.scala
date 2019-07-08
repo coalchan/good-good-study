@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 class WindowOperations {
   /**
     * reduceByWindow
+    * 对 value 进行 reduce
     */
   @Test
   def testReduceByWindow: Unit = {
@@ -14,7 +15,7 @@ class WindowOperations {
     val ssc = new StreamingContext(conf, Seconds(5))
 
     val lines = ssc.socketTextStream("localhost", 9999)
-    lines.map(_.length).reduceByWindow(_ + _, Seconds(60), Seconds(15)).print()
+    lines.map(_.length).reduceByWindow(_ + _, Seconds(30), Seconds(10)).print()
 
     ssc.start()
     ssc.awaitTermination()
@@ -44,6 +45,7 @@ class WindowOperations {
 
   /**
     * countByWindow
+    * 统计次数
     */
   @Test
   def testCountByWindow: Unit = {
@@ -55,6 +57,25 @@ class WindowOperations {
 
     val lines = ssc.socketTextStream("localhost", 9999)
     lines.countByWindow(Seconds(30), Seconds(10)).print()
+
+    ssc.start()
+    ssc.awaitTermination()
+  }
+
+  /**
+    * countByValueAndWindow
+    * 对 value 进行分组统计，输出格式为 (value, count)
+    */
+  @Test
+  def testCountByValueAndWindow: Unit = {
+    val conf = new SparkConf().setMaster("local[2]").setAppName("NetworkWordCount")
+    val ssc = new StreamingContext(conf, Seconds(5))
+
+    // countByValueAndWindow 操作需要 checkpoint
+    ssc.checkpoint("checkpoint-dir")
+
+    val lines = ssc.socketTextStream("localhost", 9999)
+    lines.countByValueAndWindow(Seconds(30), Seconds(10)).print()
 
     ssc.start()
     ssc.awaitTermination()
