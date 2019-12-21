@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
- * @author chenzhipeng
+ * @author coalchan
  */
 public class HelloWorldServer {
     private static final Logger logger = Logger.getLogger(HelloWorldServer.class.getName());
