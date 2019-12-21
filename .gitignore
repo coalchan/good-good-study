@@ -31,3 +31,4 @@ data/
 
 # checkpoint dir
 checkpoint-dir/
+.DS_Store
