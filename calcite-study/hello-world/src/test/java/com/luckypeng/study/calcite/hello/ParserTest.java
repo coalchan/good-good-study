@@ -1,6 +1,6 @@
 package com.luckypeng.study.calcite.hello;
 
-import org.apache.calcite.avatica.util.Casing;
+import org.apache.calcite.config.Lex;
 import org.apache.calcite.sql.SqlNode;
 import org.apache.calcite.sql.parser.SqlParseException;
 import org.apache.calcite.sql.parser.SqlParser;
@@ -24,10 +24,8 @@ public class ParserTest {
                 .parserConfig(
                         SqlParser.configBuilder()
                                 .setParserFactory(SqlParserImpl.FACTORY)
-                                .setCaseSensitive(false)
-                                .setQuotedCasing(Casing.TO_LOWER)
-                                .setUnquotedCasing(Casing.TO_LOWER)
-                                .setConformance(SqlConformanceEnum.DEFAULT)
+                                .setLex(Lex.MYSQL)
+                                .setConformance(SqlConformanceEnum.MYSQL_5)
                                 .build()
                 ).build().getParserConfig();
 
@@ -43,9 +41,7 @@ public class ParserTest {
                 .parserConfig(
                         SqlParser.configBuilder()
                                 .setParserFactory(SqlDdlParserImpl.FACTORY) // SqlDdlParserImpl from calcite-server
-                                .setCaseSensitive(false)
-                                .setQuotedCasing(Casing.TO_LOWER)
-                                .setUnquotedCasing(Casing.TO_LOWER)
+                                .setLex(Lex.MYSQL)
                                 .setConformance(SqlConformanceEnum.DEFAULT)
                                 .build()
                 ).build().getParserConfig();
@@ -59,8 +55,9 @@ public class ParserTest {
 
     @Test
     public void test() throws SqlParseException {
+//        String sql = "select date_sub(now(), interval 1 DAY) "; // 不支持该函数，如何解决？
         String sql = "select 1+1";
-        parse(sql, ddlConfig);
+        parse(sql, config);
     }
 
     @Test

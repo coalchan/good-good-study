@@ -1,7 +1,7 @@
 package com.luckypeng.study.calcite.hello;
 
 import com.google.common.collect.Sets;
-import org.apache.calcite.avatica.util.Casing;
+import org.apache.calcite.config.Lex;
 import org.apache.calcite.schema.SchemaPlus;
 import org.apache.calcite.sql.SqlNode;
 import org.apache.calcite.sql.parser.SqlParseException;
@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TableParserTest {
     private static SqlParser.Config config;
@@ -29,9 +29,7 @@ public class TableParserTest {
                         .parserConfig(
                                 SqlParser.configBuilder()
                                         .setParserFactory(SqlParserImpl.FACTORY)
-                                        .setCaseSensitive(false)
-                                        .setQuotedCasing(Casing.TO_LOWER)
-                                        .setUnquotedCasing(Casing.TO_LOWER)
+                                        .setLex(Lex.MYSQL)
                                         .setConformance(SqlConformanceEnum.MYSQL_5)
                                         .build()
                         ).build();
