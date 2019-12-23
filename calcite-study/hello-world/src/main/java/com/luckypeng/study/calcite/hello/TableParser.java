@@ -59,8 +59,8 @@ public class TableParser {
                 return extractTableInSelectRecursive(sqlCall.operand(0), fromOrJoin);
             }
             case IDENTIFIER: {
-                SqlIdentifier sqlIdentifier = (SqlIdentifier) sqlNode;
                 if (fromOrJoin) {
+                    SqlIdentifier sqlIdentifier = (SqlIdentifier) sqlNode;
                     return Sets.newHashSet(sqlIdentifier.toString());
                 } else {
                     return new HashSet<>(0);
