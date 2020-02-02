@@ -9,7 +9,6 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.InputStream;
-import java.util.Iterator;
 
 /**
  * XSSF and SAX (Event API)
@@ -36,10 +35,10 @@ public class ExampleEventUserModel {
         XSSFReader r = new XSSFReader( pkg );
         SharedStringsTable sst = r.getSharedStringsTable();
         XMLReader parser = fetchSheetParser(sst);
-        Iterator<InputStream> sheets = r.getSheetsData();
+        XSSFReader.SheetIterator sheets = (XSSFReader.SheetIterator) r.getSheetsData();
         while(sheets.hasNext()) {
-            System.out.println("Processing new sheet:\n");
             InputStream sheet = sheets.next();
+            System.out.println("Processing new sheet: " + sheets.getSheetName() + "\n");
             InputSource sheetSource = new InputSource(sheet);
             parser.parse(sheetSource);
             sheet.close();
@@ -106,7 +105,7 @@ public class ExampleEventUserModel {
     }
     public static void main(String[] args) throws Exception {
         ExampleEventUserModel example = new ExampleEventUserModel();
-        String fileName = "/Users/coalchan/Downloads/test.xlsx";
+        String fileName = "班级表.xlsx";
 //        example.processOneSheet(fileName);
         example.processAllSheets(fileName);
     }
