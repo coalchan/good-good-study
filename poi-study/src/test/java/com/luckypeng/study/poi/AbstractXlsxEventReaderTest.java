@@ -18,9 +18,9 @@ public class AbstractXlsxEventReaderTest {
         AbstractXlsxEventReader reader = new AbstractXlsxEventReader(fileName) {
             @Override
             public String date2Str(String cellValue, int dateIndex, String datePattern) {
-                if (datePattern.contains("yy") && !datePattern.contains("h")) {
+                if (datePattern.contains("yy") && !datePattern.contains("h:")) {
                     datePattern = "yyyy-MM-dd";
-                } else if (datePattern.contains("h") && !datePattern.contains("yy")){
+                } else if (datePattern.contains("h:") && !datePattern.contains("yy")){
                     datePattern = "hh:mm:ss";
                 } else {
                     datePattern = "yyyy-MM-dd hh:mm:ss";

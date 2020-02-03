@@ -133,7 +133,6 @@ public abstract class AbstractXlsxEventReader extends DefaultHandler {
 
             String cellStyleStr = attributes.getValue("s");
             if (cellStyleStr != null) {
-                isDate = true;
                 resolveDatePattern(cellStyleStr);
             } else {
                 isDate = false;
@@ -154,6 +153,10 @@ public abstract class AbstractXlsxEventReader extends DefaultHandler {
         curDatePattern = style.getDataFormatString();
         if (curDatePattern == null) {
             curDatePattern = BuiltinFormats.getBuiltinFormat(curDateIndex);
+        }
+        // TODO 判断是否日期类型是否可以优化
+        if (curDatePattern.contains("yy") || curDatePattern.contains("h:")) {
+            isDate = true;
         }
     }
 
