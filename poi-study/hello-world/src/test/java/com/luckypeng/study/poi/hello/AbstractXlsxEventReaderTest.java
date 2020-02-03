@@ -13,7 +13,7 @@ public class AbstractXlsxEventReaderTest {
 
     @Test
     public void process() {
-        String fileName = "班级表.xlsx";
+        String fileName = "../班级表.xlsx";
         Map<String, List<Map<String, String>>> data = new HashMap<>();
         AbstractXlsxEventReader reader = new AbstractXlsxEventReader(fileName) {
             @Override
