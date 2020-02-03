@@ -39,13 +39,10 @@ public class DataListener extends AnalysisEventListener<Map<Integer, String>> {
         }
         Map<String, String> row = new HashMap<>();
 
-        data.entrySet().stream()
+        headMap.entrySet().stream()
                 .forEach(entry -> {
-                    String columnName = headMap.get(entry.getKey());
-                    if (entry.getValue() == null) {
-                        System.out.println();
-                    }
-                    row.put(columnName, entry.getValue());
+                    String value = data.get(entry.getKey());
+                    row.put(entry.getValue(), value);
                 });
 
         result.get(sheetName).add(row);
