@@ -9,6 +9,9 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
+/**
+ * @see <a href="https://alibaba-easyexcel.github.io/quickstart/read.html"></a>
+ */
 public class DataListenerTest {
     @Test
     public void test() {
@@ -18,6 +21,9 @@ public class DataListenerTest {
         ExcelReader reader = EasyExcel.read(fileName, listener)
                 .registerConverter(new CustomNumberConverter()).build();
         reader.readAll();
+
+        // 这里千万别忘记关闭，读的时候会创建临时文件，到时磁盘会崩的
+        reader.finish();
 
         Map<String, List<Map<String, String>>> data = listener.getResult();
 
