@@ -1,7 +1,6 @@
 package com.luckypeng.study.thrift.hello;
 
 import com.luckypeng.study.thrift.hello.generated.HelloWorldService;
-import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
@@ -16,12 +15,13 @@ public class Server {
 
     public void startServer() {
         try {
-            TProcessor tprocessor = new HelloWorldService.Processor(new HelloWorldImpl());
             TServerSocket serverTransport = new TServerSocket(SERVER_PORT);
-            TServer.Args tArgs = new TServer.Args(serverTransport);
-            tArgs.processor(tprocessor);
-            tArgs.protocolFactory(new TBinaryProtocol.Factory());
+
+            TServer.Args tArgs = new TServer.Args(serverTransport)
+                    .processor(new HelloWorldService.Processor(new HelloWorldImpl()))
+                    .protocolFactory(new TBinaryProtocol.Factory());
             TServer server = new TSimpleServer(tArgs);
+
             System.out.println("Start server on port: " + SERVER_PORT);
             server.serve();
         } catch (Exception e) {
