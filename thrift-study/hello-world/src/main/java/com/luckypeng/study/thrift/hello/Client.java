@@ -1,6 +1,6 @@
 package com.luckypeng.study.thrift.hello;
 
-import com.luckypeng.study.thrift.hello.generated.HelloWorldService;
+import com.luckypeng.study.thrift.hello.generated.HelloWorldService1;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
@@ -27,7 +27,7 @@ public class Client {
             transport = new TSocket(SERVER_IP, SERVER_PORT, TIMEOUT);
             transport.open();
             TProtocol protocol = new TBinaryProtocol(transport);
-            HelloWorldService.Client client = new HelloWorldService.Client(protocol);
+            HelloWorldService1.Client client = new HelloWorldService1.Client(protocol);
             String result = client.sayHello(userName);
             System.out.println("thrift remote call : " + result);
         } catch (TTransportException e) {

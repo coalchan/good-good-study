@@ -1,6 +1,6 @@
 package com.luckypeng.study.thrift.hello;
 
-import com.luckypeng.study.thrift.hello.generated.HelloWorldService;
+import com.luckypeng.study.thrift.hello.generated.HelloWorldService1;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TSimpleServer;
@@ -18,7 +18,7 @@ public class Server {
             TServerSocket serverTransport = new TServerSocket(SERVER_PORT);
 
             TServer.Args tArgs = new TServer.Args(serverTransport)
-                    .processor(new HelloWorldService.Processor(new HelloWorldImpl()))
+                    .processor(new HelloWorldService1.Processor(new HelloWorldImpl()))
                     .protocolFactory(new TBinaryProtocol.Factory());
             TServer server = new TSimpleServer(tArgs);
 
