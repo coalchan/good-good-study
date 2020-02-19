@@ -30,3 +30,13 @@
 
 * ErrorCodes.thrift ->
     来自于 https://github.com/cloudera/hue/tree/cdh5-3.9.0_5.16.1/apps/impala/thrift
+
+2. 运行
+
+* 运行 maven 插件，生成 java 代码。
+* 直接运行 main 方法。
+
+3. 参考
+
+* [通过Impala thrift API接口进行Impala查询](https://blog.csdn.net/maydaysar/article/details/85236197)
+* [impala-client-example](https://github.com/terry-chelsea/impala-client-example)
