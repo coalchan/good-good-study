@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
+ * Impala beeswax 方式连接
  * @author coalchan
  */
 public class ImpalaBeeswaxClientTest {
@@ -27,7 +28,33 @@ public class ImpalaBeeswaxClientTest {
         testThriftClient(sc);
         sc.close();
     }
-    
+
+	protected static void testThriftClient(Scanner sc) {
+		ImpalaService.Client client;
+		try {
+			client = getClient();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		String line;
+
+		System.out.println(">>>>>>>>Input Statement Line<<<<<<<<<");
+		while((line = sc.nextLine()) != null) {
+			if(line.trim().equalsIgnoreCase("quit")) {
+				System.out.println("Bye!");
+				break;
+			}
+			try {
+				executeAndOutput(client, line);
+			} catch(Exception e) {
+				System.err.println("Failed to testThriftClient sql : " + line);
+				e.printStackTrace();
+			}
+			System.out.println(">>>>>>>>Input Statement Line<<<<<<<<<");
+		}
+	}
+
     private static ImpalaService.Client getClient() throws Exception {
     	//open connection
         TTransport transport = new TSocket(HOST, PORT);
@@ -37,32 +64,6 @@ public class ImpalaBeeswaxClientTest {
         ImpalaService.Client client = new ImpalaService.Client(protocol);
         client.PingImpalaService();
         return client;
-    }
-    
-    protected static void testThriftClient(Scanner sc) {
-    	ImpalaService.Client client = null;
-    	try {
-    		client = getClient();
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		return;
-    	}
-    	String line = null;
-    	
-    	System.out.println(">>>>>>>>Input Statement Line<<<<<<<<<");
-    	while((line = sc.nextLine()) != null) {
-    		if(line.trim().equalsIgnoreCase("quit")) {
-    			System.out.println("Bye!");
-    			break;
-    		}
-    		try {
-    			executeAndOutput(client, line);
-    		} catch(Exception e) {
-    			System.err.println("Failed to execute sql : " + line);
-    			e.printStackTrace();
-    		}
-        	System.out.println(">>>>>>>>Input Statement Line<<<<<<<<<");
-    	}
     }
     	
     private static void executeAndOutput(ImpalaService.Client client, String statement)
@@ -88,11 +89,11 @@ public class ImpalaBeeswaxClientTest {
 	            client.Cancel(handle);
 	        }
 			
-	        Thread.sleep(1000);
+	        Thread.sleep(100);
 		}
 
         boolean done = false;
-        while(queryState == QueryState.FINISHED && done == false) {
+        while(queryState == QueryState.FINISHED && !done) {
             List<FieldSchema> schema = client.get_results_metadata(handle).getSchema().getFieldSchemas();
             System.out.println(schema.toString());
 
