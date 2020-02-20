@@ -1,4 +1,4 @@
-package com.luckypeng.study.thrift.beeswax;
+package com.luckypeng.study.thrift.hs2.util;
 
 import org.apache.hive.service.cli.thrift.THandleIdentifier;
 

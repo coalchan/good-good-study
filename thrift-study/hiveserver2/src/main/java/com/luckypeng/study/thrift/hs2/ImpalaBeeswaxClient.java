@@ -1,4 +1,4 @@
-package com.luckypeng.study.thrift.beeswax;
+package com.luckypeng.study.thrift.hs2;
 
 import com.cloudera.beeswax.api.Query;
 import com.cloudera.beeswax.api.QueryHandle;
@@ -18,18 +18,12 @@ import java.util.Scanner;
  * Impala beeswax 方式连接
  * @author coalchan
  */
-public class ImpalaBeeswaxClientTest {
+public class ImpalaBeeswaxClient {
     private static String HOST = "kuber01";
     private static int PORT = 21000;
     private static int TIMEOUT = 60;
 
-    public static void main(String [] args) {
-        Scanner sc = new Scanner(System.in);
-        testThriftClient(sc);
-        sc.close();
-    }
-
-	protected static void testThriftClient(Scanner sc) {
+	protected static void testClient(Scanner sc) {
 		ImpalaService.Client client;
 		try {
 			client = getClient();
@@ -39,7 +33,7 @@ public class ImpalaBeeswaxClientTest {
 		}
 		String line;
 
-		System.out.println(">>>>>>>>Input Statement Line<<<<<<<<<");
+		System.out.println(">>>>>>>>Input Statement Line<<<<<<<<<\n");
 		while((line = sc.nextLine()) != null) {
 			if(line.trim().equalsIgnoreCase("quit")) {
 				System.out.println("Bye!");
@@ -48,10 +42,10 @@ public class ImpalaBeeswaxClientTest {
 			try {
 				executeAndOutput(client, line);
 			} catch(Exception e) {
-				System.err.println("Failed to testThriftClient sql : " + line);
+				System.err.println("Failed to executeQuery sql : " + line);
 				e.printStackTrace();
 			}
-			System.out.println(">>>>>>>>Input Statement Line<<<<<<<<<");
+			System.out.println(">>>>>>>>Input Statement Line<<<<<<<<<\n");
 		}
 	}
 

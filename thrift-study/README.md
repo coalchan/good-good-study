@@ -13,7 +13,11 @@
 1. 运行 maven 插件，生成 java 代码。
 2. 分别运行 Server 和 Client 代码。
 
-### impala-beeswax
+### hiveserver2
+
+* ImpalaBeeswaxClient: Impala Beeswax 接口
+* ImpalaHS2Client: Impala Hiveserver2 接口
+* HiveHS2Client: Hive Hiveserver2 接口
 
 0. 注意
 * 这里容易混乱的是 ImpalaHiveServer2Service, ImpalaService, BeeswaxService 三者之间的关系，
