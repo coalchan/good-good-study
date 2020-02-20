@@ -20,13 +20,12 @@ import java.util.Scanner;
  * @date 2020/02/19
  */
 public class ImpalaHS2Client {
-    private static int MAX_RESULT_CACHE_SIZE = 1000;
-
     protected final String host;
     protected final int port;
     protected final int timeout;
     protected final String userName;
     protected final String password;
+    protected final int maxCacheSize = 100;
 
     public ImpalaHS2Client(String host, int port, int timeout, String userName, String password) {
         this.host = host;
@@ -78,7 +77,7 @@ public class ImpalaHS2Client {
     }
 
     public void executeQuery(TCLIService.Client client, TSessionHandle session, String sql) throws Exception {
-        TExecuteStatementResp execResp = Hiveserver2Helper.submitQuery(client, session, sql, MAX_RESULT_CACHE_SIZE);
+        TExecuteStatementResp execResp = Hiveserver2Helper.submitQuery(client, session, sql, maxCacheSize);
 
         TStatus status = execResp.getStatus();
         if (status.getStatusCode() == TStatusCode.ERROR_STATUS ||
@@ -112,7 +111,7 @@ public class ImpalaHS2Client {
         boolean done = false;
         boolean startOver = true;
         boolean cached = false;
-        if (MAX_RESULT_CACHE_SIZE > 0) {
+        if (maxCacheSize > 0) {
             cached = true;
         }
 
@@ -130,7 +129,7 @@ public class ImpalaHS2Client {
                             TOperationHandle tOperationHandle,
                             boolean startOver,
                             boolean cached) throws TException {
-        TFetchResultsResp resultsResp = Hiveserver2Helper.getResult(client, tOperationHandle, startOver, cached);
+        TFetchResultsResp resultsResp = Hiveserver2Helper.getResult(client, tOperationHandle, startOver, cached, maxCacheSize);
         return resultsResp.hasMoreRows;
     }
 

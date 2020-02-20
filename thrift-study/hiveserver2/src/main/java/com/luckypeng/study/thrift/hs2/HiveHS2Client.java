@@ -17,8 +17,6 @@ import javax.security.sasl.SaslException;
  * @date 2020/02/19
  */
 public class HiveHS2Client extends ImpalaHS2Client {
-    private static int MAX_RESULT_CACHE_SIZE = 1000;
-
     public HiveHS2Client(String host, int port, int timeout, String userName, String password) {
         super(host, port, timeout, userName, password);
     }
@@ -39,7 +37,8 @@ public class HiveHS2Client extends ImpalaHS2Client {
                            TOperationHandle tOperationHandle,
                            boolean startOver,
                            boolean cached) throws TException {
-        TFetchResultsResp resultsResp = Hiveserver2Helper.getResult(client, tOperationHandle, startOver, cached);
-        return resultsResp.getResults().getRows().size() < MAX_RESULT_CACHE_SIZE;
+        TFetchResultsResp resultsResp = Hiveserver2Helper.getResult(client, tOperationHandle, startOver, cached, maxCacheSize);
+        return !resultsResp.getResults().getRows().isEmpty() &&
+                resultsResp.getResults().getRows().size() >= maxCacheSize ;
     }
 }

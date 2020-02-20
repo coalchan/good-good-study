@@ -99,7 +99,8 @@ public class Hiveserver2Helper {
     public static TFetchResultsResp getResult(TCLIService.Client client,
                                               TOperationHandle tOperationHandle,
                                               boolean startOver,
-                                              boolean cached) throws TException {
+                                              boolean cached,
+                                              int maxCacheSize) throws TException {
         //获取列名
         TGetResultSetMetadataReq metadataReq = new TGetResultSetMetadataReq(tOperationHandle);
         TGetResultSetMetadataResp metadataResp = client.GetResultSetMetadata(metadataReq);
@@ -114,7 +115,7 @@ public class Hiveserver2Helper {
         }
 
         //获取数据
-        TFetchResultsReq fetchReq = new TFetchResultsReq(tOperationHandle, orientation, 100);
+        TFetchResultsReq fetchReq = new TFetchResultsReq(tOperationHandle, orientation, maxCacheSize);
 
         TFetchResultsResp resultsResp = client.FetchResults(fetchReq);
         TStatus status = resultsResp.getStatus();

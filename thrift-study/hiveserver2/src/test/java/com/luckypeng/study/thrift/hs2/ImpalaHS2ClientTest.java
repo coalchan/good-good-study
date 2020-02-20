@@ -36,6 +36,6 @@ public class ImpalaHS2ClientTest {
         TOperationHandle operationHandle = new TOperationHandle(operationId, TOperationType.EXECUTE_STATEMENT, true);
 
         System.out.println(Hiveserver2Helper.getQueryHandleStatus(hiverserver2.getClient(), operationHandle));
-        Hiveserver2Helper.getResult(hiverserver2.getClient(), operationHandle, true, true);
+        Hiveserver2Helper.getResult(hiverserver2.getClient(), operationHandle, true, true, impalaHS2Client.maxCacheSize);
     }
 }
