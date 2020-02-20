@@ -4,8 +4,7 @@ import org.apache.hive.service.cli.thrift.*;
 import org.apache.impala.thrift.ImpalaHiveServer2Service;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.transport.TSocket;
-import org.apache.thrift.transport.TTransportException;
+import org.apache.thrift.transport.*;
 
 import java.util.List;
 import java.util.Scanner;
@@ -16,9 +15,11 @@ import java.util.Scanner;
  * @date 2020/02/19
  */
 public class ImpalaHS2ClientTest {
-    private static String HOST = "kuber01";
+    private static String HOST = "kuber02";
     private static int PORT = 21050;
     private static int TIMEOUT = 60;
+    private static int MAX_RESULT_CACHE_SIZE = 1000;
+
     private static String USER_NAME = "thrift-test";
 
     private static TSocket transport;
@@ -30,7 +31,6 @@ public class ImpalaHS2ClientTest {
         getSession();
 
         Scanner sc = new Scanner(System.in);
-//        String sql = "select * from import.paiban_table limit 201";
 
         String line;
 
@@ -52,7 +52,7 @@ public class ImpalaHS2ClientTest {
         close();
     }
 
-    private static void getClient() {
+    public static void getClient() {
         transport = new TSocket(HOST, PORT, TIMEOUT);
         try {
             transport.open();
@@ -64,14 +64,14 @@ public class ImpalaHS2ClientTest {
     }
 
     private static void getSession() {
-        TOpenSessionReq openReq = new TOpenSessionReq();
-        openReq.setClient_protocol(TProtocolVersion.HIVE_CLI_SERVICE_PROTOCOL_V1);
+        TOpenSessionReq openReq = new TOpenSessionReq(TProtocolVersion.HIVE_CLI_SERVICE_PROTOCOL_V1);
         openReq.setUsername(USER_NAME);
         TOpenSessionResp openResp = null;
         try {
             openResp = client.OpenSession(openReq);
         } catch (TException e) {
             e.printStackTrace();
+            System.exit(-1);
         }
         System.out.println("server protocol version is: " + openResp.getServerProtocolVersion());
         session = openResp.getSessionHandle();
@@ -81,6 +81,10 @@ public class ImpalaHS2ClientTest {
         TExecuteStatementReq execReq = new TExecuteStatementReq(session, sql);
         //设置异步
         execReq.setRunAsync(true);
+        if (MAX_RESULT_CACHE_SIZE > 0) {
+            // 设置结果缓存，以便再次从头获取结果集
+            execReq.putToConfOverlay("impala.resultset.cache.size", String.valueOf(MAX_RESULT_CACHE_SIZE));
+        }
         TExecuteStatementResp execResp = client.ExecuteStatement(execReq);
         return execResp;
     }
@@ -114,18 +118,30 @@ public class ImpalaHS2ClientTest {
             Thread.sleep(100);
         }
 
+        HandleIdentifier handleIdentifier = new HandleIdentifier(tOperationHandle.getOperationId());
+        System.out.println("queryId is: " + handleIdentifier.getPublicId() + ":" + handleIdentifier.getSecretId());
+
         boolean done = false;
+        boolean startOver = true;
+        boolean cached = false;
+        if (MAX_RESULT_CACHE_SIZE > 0) {
+            cached = true;
+        }
+
         while (queryHandleStatus == TOperationState.FINISHED_STATE && !done) {
-            TFetchResultsResp resultsResp = getResult(tOperationHandle);
+            TFetchResultsResp resultsResp = getResult(tOperationHandle, startOver, cached);
             if (!resultsResp.hasMoreRows) {
                 done = true;
+            }
+            if (startOver) {
+                startOver = false;
             }
         }
 
         closeOperation(tOperationHandle);
     }
 
-    private static void closeOperation(TOperationHandle tOperationHandle) throws TException {
+    public static void closeOperation(TOperationHandle tOperationHandle) throws TException {
         TCloseOperationReq closeReq = new TCloseOperationReq(tOperationHandle);
         client.CloseOperation(closeReq);
     }
@@ -145,7 +161,8 @@ public class ImpalaHS2ClientTest {
         }
     }
 
-    public static TFetchResultsResp getResult(TOperationHandle tOperationHandle) throws TException {
+    public static TFetchResultsResp getResult(TOperationHandle tOperationHandle, boolean startOver, boolean cached)
+            throws TException {
         //获取列名
         TGetResultSetMetadataReq metadataReq = new TGetResultSetMetadataReq(tOperationHandle);
         TGetResultSetMetadataResp metadataResp = client.GetResultSetMetadata(metadataReq);
@@ -153,8 +170,14 @@ public class ImpalaHS2ClientTest {
         columns.forEach(column -> System.out.print(column.getColumnName() + "\t"));
         System.out.println();
 
+        TFetchOrientation orientation = TFetchOrientation.FETCH_NEXT;
+        if (startOver && cached) {
+            // 如果设置了缓存，从头开始查询的话，这里需要设置下
+            orientation = TFetchOrientation.FETCH_FIRST;
+        }
+
         //获取数据
-        TFetchResultsReq fetchReq = new TFetchResultsReq(tOperationHandle, TFetchOrientation.FETCH_NEXT, 100);
+        TFetchResultsReq fetchReq = new TFetchResultsReq(tOperationHandle, orientation, 100);
 
         TFetchResultsResp resultsResp = client.FetchResults(fetchReq);
         TStatus status = resultsResp.getStatus();
@@ -204,12 +227,8 @@ public class ImpalaHS2ClientTest {
     }
 
     public static TOperationState getQueryHandleStatus(TOperationHandle tOperationHandle) throws Exception {
-        TOperationState tOperationState = null;
-        if (tOperationHandle != null) {
-            TGetOperationStatusReq statusReq = new TGetOperationStatusReq(tOperationHandle);
-            TGetOperationStatusResp statusResp = client.GetOperationStatus(statusReq);
-            tOperationState = statusResp.getOperationState();
-        }
-        return tOperationState;
+        TGetOperationStatusReq statusReq = new TGetOperationStatusReq(tOperationHandle);
+        TGetOperationStatusResp statusResp = client.GetOperationStatus(statusReq);
+        return statusResp.getOperationState();
     }
 }
