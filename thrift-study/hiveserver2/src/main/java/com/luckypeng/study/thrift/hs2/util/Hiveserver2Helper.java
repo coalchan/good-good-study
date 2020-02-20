@@ -5,6 +5,7 @@ import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransport;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author coalchan
@@ -13,9 +14,10 @@ import java.util.List;
 public class Hiveserver2Helper {
     private Hiveserver2Helper() {}
 
-    public static TSessionHandle getSession(TCLIService.Client client, String userName) {
+    public static TSessionHandle getSession(TCLIService.Client client, String userName, Map<String, String> config) {
         TOpenSessionReq openReq = new TOpenSessionReq(TProtocolVersion.HIVE_CLI_SERVICE_PROTOCOL_V1);
         openReq.setUsername(userName);
+        openReq.setConfiguration(config);
         TOpenSessionResp openResp = null;
         try {
             openResp = client.OpenSession(openReq);
@@ -57,15 +59,6 @@ public class Hiveserver2Helper {
             return field.getByteVal().getValue();
         } else {
             return field.getFieldValue();
-        }
-    }
-
-    public static void getQueryLog(TCLIService.Client client, TOperationHandle tOperationHandle) throws Exception {
-        TGetLogReq tGetLogReq = new TGetLogReq(tOperationHandle);
-        TGetLogResp logResp = client.GetLog(tGetLogReq);
-        String log = logResp.getLog();
-        if (log != null) {
-            System.out.println("GetLog: " + log);
         }
     }
 
@@ -116,7 +109,10 @@ public class Hiveserver2Helper {
 
         //获取数据
         TFetchResultsReq fetchReq = new TFetchResultsReq(tOperationHandle, orientation, maxCacheSize);
+        return fetchResults(client, fetchReq);
+    }
 
+    public static TFetchResultsResp fetchResults(TCLIService.Client client, TFetchResultsReq fetchReq) throws TException {
         TFetchResultsResp resultsResp = client.FetchResults(fetchReq);
         TStatus status = resultsResp.getStatus();
         if (status.getStatusCode() == TStatusCode.ERROR_STATUS) {

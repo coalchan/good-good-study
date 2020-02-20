@@ -12,6 +12,8 @@ import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -37,7 +39,7 @@ public class ImpalaHS2Client {
 
     public void testClient() {
         Hiverserver2 hiverserver2 = getClient();
-        TSessionHandle session = Hiveserver2Helper.getSession(hiverserver2.getClient(), userName);
+        TSessionHandle session = Hiveserver2Helper.getSession(hiverserver2.getClient(), userName, getSessionConfig());
 
         Scanner sc = new Scanner(System.in);
         String line;
@@ -57,6 +59,10 @@ public class ImpalaHS2Client {
 
         Hiveserver2Helper.closeSession(hiverserver2.getClient(), session);
         Hiveserver2Helper.close(hiverserver2.getTTransport());
+    }
+
+    public Map<String, String> getSessionConfig() {
+        return new HashMap<>();
     }
 
     public Hiverserver2 getClient() {
@@ -95,7 +101,7 @@ public class ImpalaHS2Client {
             if (queryHandleStatus == TOperationState.PENDING_STATE) {
                 System.out.println("pending...");
             } else if (queryHandleStatus == TOperationState.RUNNING_STATE) {
-                Hiveserver2Helper.getQueryLog(client, tOperationHandle);
+                getQueryLog(client, tOperationHandle);
             } else if (queryHandleStatus == TOperationState.FINISHED_STATE) {
                 break;
             } else if (queryHandleStatus == TOperationState.ERROR_STATE) {
@@ -123,6 +129,15 @@ public class ImpalaHS2Client {
         }
 
         Hiveserver2Helper.closeOperation(client, tOperationHandle);
+    }
+
+    public void getQueryLog(TCLIService.Client client, TOperationHandle tOperationHandle) throws Exception {
+        TGetLogReq tGetLogReq = new TGetLogReq(tOperationHandle);
+        TGetLogResp logResp = client.GetLog(tGetLogReq);
+        String log = logResp.getLog();
+        if (log != null) {
+            System.out.println("GetLog: " + log);
+        }
     }
 
     public boolean hasMore(TCLIService.Client client,

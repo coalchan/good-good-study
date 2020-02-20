@@ -15,7 +15,7 @@ public class ImpalaHS2ClientTest {
     @Test
     public void testClient() {
         ImpalaHS2Client impalaHS2Client =
-                new ImpalaHS2Client("kuber02", 21050, 60,"thrift-test", "");
+                new ImpalaHS2Client("kuber02", 21050, 1000,"thrift-test", "");
         impalaHS2Client.testClient();
     }
 
