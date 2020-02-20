@@ -30,9 +30,13 @@
 * beeswax.thrift, ExecStats.thrift, ImpalaService.thrift, Status.thrift, Types.thrift ->
     来自于 https://github.com/cloudera/Impala/tree/cdh5-2.12.0_5.16.1/common/thrift
 
-* hive_metastore.thrift, fb303.thrift ->
+* hive_metastore.thrift ->
     来自于 https://github.com/cloudera/hue/tree/cdh5-3.9.0_5.16.1/apps/impala/thrift/include
     当然也可以从 hive 的源码 https://github.com/cloudera/hive/tree/cdh5-1.1.0_5.16.1/metastore/if 获取
+
+* fb303.thrift ->
+    来自于 https://github.com/cloudera/hue/tree/cdh5-3.9.0_5.16.1/apps/impala/thrift/include
+    当然也可以从 thrift 的源码 https://github.com/apache/thrift/blob/0.9.3/contrib/fb303/if 获取
 
 * TCLIService.thrift ->
     来自于 https://github.com/cloudera/hue/tree/cdh5-3.9.0_5.16.1/apps/impala/thrift
@@ -40,6 +44,7 @@
 
 * ErrorCodes.thrift ->
     来自于 https://github.com/cloudera/hue/tree/cdh5-3.9.0_5.16.1/apps/impala/thrift
+    未找到原始来源，如果您找到了，麻烦告知～
 
 2. 运行
 
