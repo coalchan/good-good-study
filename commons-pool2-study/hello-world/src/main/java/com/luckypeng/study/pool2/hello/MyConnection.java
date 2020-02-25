@@ -36,7 +36,7 @@ public class MyConnection implements Closeable {
 
     @Override
     public void close() throws IOException {
-        System.out.println("My connection closed");
+        System.out.println("My connection " + connectionId + " closed");
     }
 
     public String request(String msg) {

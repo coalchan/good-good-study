@@ -21,10 +21,10 @@ public class MyKeyedPooledObjectFactoryTest {
 //        if return illegal key, will throw java.lang.IllegalStateException: No keyed pool found under the given key.
 //        pool.returnObject("b", connection);
 
-        MyConnection connection1 = pool.borrowObject("a");
+        MyConnection connection1 = pool.borrowObject("b");
         System.out.println("borrowed connection: " + connection1.getConnectionId());
 
-        MyConnection connection2 = pool.borrowObject("b");
+        MyConnection connection2 = pool.borrowObject("c");
         System.out.println("borrowed connection: " + connection2.getConnectionId());
     }
 }
