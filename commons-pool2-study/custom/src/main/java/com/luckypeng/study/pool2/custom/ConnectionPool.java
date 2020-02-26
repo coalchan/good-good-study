@@ -1,6 +1,7 @@
 package com.luckypeng.study.pool2.custom;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -75,7 +76,7 @@ public class ConnectionPool<T extends OperationCloseable<V>, V> {
     }
 
     public int getNumActive() {
-        return all.size() - idles.size() - reserved.size();
+        return all.size() - idles.size();
     }
 
     public int getNumIdle() {
@@ -83,7 +84,7 @@ public class ConnectionPool<T extends OperationCloseable<V>, V> {
     }
 
     public int getNumReserved() {
-        return reserved.size();
+        return new HashSet<>(reservedConnections.values()).size();
     }
 
     /***
@@ -197,10 +198,6 @@ public class ConnectionPool<T extends OperationCloseable<V>, V> {
         if (p == null) {
             // 如果空闲连接不够用，可以从 reserved 中获取，从而提高利用率
             p = reserved.poll(maxWaitTimeMillis / 2, TimeUnit.MILLISECONDS);
-            if (p != null && p.getNumOperations() >= maxReserveOperations) {
-                reserved.put(p);
-                p = null;
-            }
         }
 
         testP(p, "from reserved");
@@ -237,7 +234,6 @@ public class ConnectionPool<T extends OperationCloseable<V>, V> {
         if (p == null) {
             return null;
         }
-        reserved.remove(p);
         return p.getConnection();
     }
 
@@ -257,7 +253,15 @@ public class ConnectionPool<T extends OperationCloseable<V>, V> {
         final long activeTime = p.getActiveTimeMillis();
         p.addOperation(operation);
         reservedConnections.put(operation, p);
-        System.out.println("1reserved: " + p.hashCode());
+        if (p.getNumOperations() < maxReserveOperations) {
+            if (!reserved.contains(p)) {
+                long now = System.currentTimeMillis();
+                System.out.println(now + "put:" + p.hashCode());
+                reserved.put(p);
+            }
+        } else {
+            reserved.remove(p);
+        }
         updateStatsBack(activeTime);
     }
 
@@ -266,13 +270,15 @@ public class ConnectionPool<T extends OperationCloseable<V>, V> {
         final long activeTime = p.getActiveTimeMillis();
         p.closeOperation(operation);
         reservedConnections.remove(operation);
-        if (p.getNumOperations() > 0) {
-            reserved.put(p);
-            System.out.println("2reserved: " + p.hashCode());
-        } else if (idles.size() >= maxIdle) {
-            destroy(p);
-        } else {
-            idles.put(p);
+        if (p.getNumOperations() == 0) {
+            long now = System.currentTimeMillis();
+            System.out.println(now + "removed:" + p.hashCode());
+            reserved.remove(p);
+            if (idles.size() >= maxIdle) {
+                destroy(p);
+            } else {
+                idles.put(p);
+            }
         }
         updateStatsBack(activeTime);
     }
