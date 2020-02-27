@@ -1,16 +1,20 @@
 package com.luckypeng.study.pool2.custom;
 
 import lombok.Getter;
+import org.apache.commons.pool2.impl.Operationable;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author coalchan
  * @date 2020/02/25
  */
-public class MyConnection implements OperationCloseable<String> {
+public class MyConnection implements Operationable<String> {
     @Getter
     private String id;
+
+    private final AtomicInteger operationCount = new AtomicInteger(0);
 
     public MyConnection() {
         id = UUID.randomUUID().toString();
@@ -33,10 +37,18 @@ public class MyConnection implements OperationCloseable<String> {
         return operation + ":RUNNING";
     }
 
-    @Override
-    public void closeOperation(String operation) throws Exception {
+    public void addOperation() {
+        operationCount.incrementAndGet();
+    }
+
+    public void closeOperation(String operation) {
         sleep(500);
-        System.out.println("close operation: " + operation);
+        operationCount.decrementAndGet();
+    }
+
+    @Override
+    public boolean hasOperations() {
+        return operationCount.get() != 0;
     }
 
     private static void sleep(long millis) {
