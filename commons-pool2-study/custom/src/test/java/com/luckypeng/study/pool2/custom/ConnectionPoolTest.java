@@ -66,18 +66,14 @@ public class ConnectionPoolTest {
     }
 
     public static String execute() throws Exception {
-        MyConnection conn = null;
-        boolean isReserved = false;
-        conn = pool.borrowObject(2000);
+        MyConnection conn = pool.borrowObject(2000);
         if (conn == null) {
             throw new RuntimeException("borrow null");
         }
         String operation = conn.execute();
         conn.addOperation();
         reservedMap.put(operation, conn);
-        if (!isReserved) {
-            pool.returnObject(conn);
-        }
+        pool.returnObject(conn);
         return operation;
     }
 
