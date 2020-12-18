@@ -29,6 +29,7 @@ INT     : [0-9]+ ;
 2. 编译
 
 ```shell script
+antlr4 Expr.g4
 javac -cp /usr/local/lib/antlr-4.8-complete.jar Expr*.java
 ```
 
