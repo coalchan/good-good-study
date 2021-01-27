@@ -1,6 +1,7 @@
 package com.luckypeng.study.flink.streaming.window;
 
 import org.apache.flink.api.common.functions.AggregateFunction;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.ReduceFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -9,6 +10,7 @@ import org.apache.flink.streaming.api.functions.windowing.ProcessAllWindowFuncti
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
+import org.apache.flink.util.StringUtils;
 import org.junit.Test;
 
 /**
@@ -32,6 +34,29 @@ public class FunctionTest {
         dataStream
                 .timeWindowAll(Time.seconds(10))
                 .reduce((ReduceFunction<String>) (value1, value2) -> value1 + value2).print();
+        env.execute();
+    }
+
+    /**
+     * keyed 窗口，根据不同 key，会独立窗口计算
+     * @throws Exception
+     */
+    @Test
+    public void testKeyReduce() throws Exception {
+        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        DataStream<String> dataStream = env.socketTextStream("localhost", 12348);
+        dataStream
+                .filter(str -> !StringUtils.isNullOrWhitespaceOnly(str))
+                .map(new MapFunction<String, Tuple2<String, String>>() {
+                    @Override
+                    public Tuple2<String, String> map(String value) throws Exception {
+                        String[] arr = value.split(",");
+                        return Tuple2.of(arr[0], arr[1]);
+                    }
+                }).keyBy(0).countWindow(3)
+                .reduce((ReduceFunction<Tuple2<String, String>>) (v1, v2) -> {
+                    return new Tuple2<>(v1.f0, v1.f1 + v2.f1);
+                }).print();
         env.execute();
     }
 
