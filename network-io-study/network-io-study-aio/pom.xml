@@ -15,6 +15,7 @@
         <dependency>
             <groupId>com.luckypeng.study</groupId>
             <artifactId>network-io-study-bio</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

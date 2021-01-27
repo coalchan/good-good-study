@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 /**
- * @author chenzhipeng
+ * @author coalchan
  */
 public class HelloWorldServer {
     private static final Logger logger = Logger.getLogger(HelloWorldServer.class.getName());
@@ -65,6 +65,7 @@ public class HelloWorldServer {
 
         @Override
         public void sayHello(HelloRequest req, StreamObserver<HelloReply> responseObserver) {
+            System.out.println("req with: " + req.getName());
             HelloReply reply = HelloReply.newBuilder().setMessage("Hello " + req.getName()).build();
             responseObserver.onNext(reply);
             responseObserver.onCompleted();
