@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luckypeng.study.mybatis.sharding.dao.OrderMapper">
+	<resultMap id="BaseResultMap" type="com.luckypeng.study.mybatis.sharding.model.Order">
+		<id column="order_id" property="orderId"/>
+		<result column="user_id" property="userId" />
+		<result column="status" property="status" />
+	</resultMap>
+
+	<sql id="Base_Column_List_Insert">
+		 order_id, user_id, status
+	</sql>
+	
+	<sql id="Base_Column_List">
+		<include refid="Base_Column_List_Insert" />
+	</sql>
+	
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		SELECT <include refid="Base_Column_List" /> FROM t_order
+		where  order_id = #{id}
+	</select>
+	
+	<!-- 添加  数据 注意这里不能将 order_id 写上，因为需要用到自动生成算法 -->
+	<insert id="save" parameterType="com.luckypeng.study.mybatis.sharding.model.Order" useGeneratedKeys="true" keyColumn="order_id" keyProperty="orderId">
+		INSERT INTO t_order (user_id, status)
+		VALUES ( #{userId}, #{status})
+	</insert>
+</mapper>

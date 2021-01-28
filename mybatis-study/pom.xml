@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>hello-world</module>
+        <module>mybatis-sharding-jdbc</module>
     </modules>
 
     <properties>
