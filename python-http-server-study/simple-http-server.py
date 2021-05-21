@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import SimpleHTTPServer
 import SocketServer
 import sys
