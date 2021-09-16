@@ -33,3 +33,6 @@ data/
 checkpoint-dir/
 .DS_Store
 *.pyc
+
+# rust
+*.lock
